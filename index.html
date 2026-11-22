@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fengxian Su · Fracture simulations on fixed grids</title>
+<meta name="description" content="Cut-cell phase-field fracture simulations by Fengxian Su, visiting student researcher at UC Berkeley: supershear cracks in soft sheets, plates with pores, and hydraulic fracturing.">
+<style>
+  :root { --ink: #1d1d1f; --muted: #5f6368; --line: #e3e3e3; --accent: #003262; --card: #fafafa; }
+  * { box-sizing: border-box; }
+  body { margin: 0; color: var(--ink); background: #fff;
+         font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  main { max-width: 1080px; margin: 0 auto; padding: 48px 24px 64px; }
+  header { border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 28px; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 6px; }
+  .role { margin: 0; color: var(--muted); }
+  .contact { margin: 8px 0 0; }
+  a { color: var(--accent); }
+  .intro { font-size: 1.05rem; max-width: 860px; margin: 0; }
+  h2 { font-size: 1.25rem; margin: 48px 0 6px; }
+  .note { color: var(--muted); font-size: .92rem; margin: 0 0 16px; max-width: 900px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
+  @media (min-width: 760px) { .grid.two { grid-template-columns: 1fr 1fr; } }
+  figure { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  video { display: block; width: 100%; height: auto; background: #000; }
+  figcaption { padding: 12px 14px 14px; font-size: .93rem; }
+  figcaption strong { display: block; margin-bottom: 2px; }
+  footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Fengxian Su</h1>
+    <p class="role">Visiting Student Researcher, Department of Mechanical Engineering, UC Berkeley (advisor: Prof. Panayiotis Papadopoulos)<br>
+    B.Sc. candidate in Theoretical and Applied Mechanics, University of Science and Technology of China</p>
+    <p class="contact"><a href="mailto:fengxian@berkeley.edu">fengxian@berkeley.edu</a></p>
+  </header>
+
+  <p class="intro">These clips come from a cut-cell finite element method for phase-field fracture that I am developing at UC Berkeley.
+  Holes, notches, and the cracks themselves are cut through one fixed Cartesian grid, so complex geometries and evolving crack paths
+  need no remeshing, and explicit dynamics runs on a GPU. In quasi-static benchmarks the method matches body-fitted finite elements
+  with about a third of the degrees of freedom.</p>
+
+  <h2>Supershear cracks in stretched soft sheets</h2>
+  <p class="note">Problem setup after Tian &amp; Gong, <a href="https://doi.org/10.1016/j.jmps.2025.106191">J. Mech. Phys. Solids 202, 106191 (2025)</a>.
+  Cracks faster than the shear-wave speed, with oscillating paths, were observed in stretched hydrogels by Wang, Shi &amp; Fineberg,
+  <a href="https://doi.org/10.1126/science.adg7693">Science 381, 415 (2023)</a>.</p>
+  <div class="grid two">
+    <figure>
+      <video src="videos/soft_oscillation_lab.mp4" poster="images/soft_oscillation_lab.jpg" muted loop playsinline controls preload="none"
+             aria-label="Simulation: an oscillating supershear crack in a stretched soft sheet"></video>
+      <figcaption><strong>Oscillating supershear crack</strong>A crack released in a sheet stretched by 18% runs at 1.16&ndash;1.17
+      times the shear-wave speed, then oscillates through five cycles. Grey: strain-energy density; thin lines: material lines that
+      formed a square grid before loading.</figcaption>
+    </figure>
+    <figure>
+      <video src="videos/soft_oscillation_panels.mp4" poster="images/soft_oscillation_panels.jpg" muted loop playsinline controls preload="none"
+             aria-label="The same simulation with the reference grid and the cut cells at the crack tip"></video>
+      <figcaption><strong>The same run, seen through the grid</strong>Top: the deformed sheet; strip: the crack path in the reference
+      grid; bottom: the fixed grid at the crack tip with its cut cells, and the same cells deformed. The crack is cut through 683,520
+      cells instead of being meshed. On a finer grid the same input splits instead, so the pattern is still under a mesh-convergence
+      study.</figcaption>
+    </figure>
+  </div>
+
+  <h2>Brittle plates with pores</h2>
+  <p class="note">Plates and pore layouts from the PMMA experiments of Carlsson &amp; Isaksson, Eng. Fract. Mech. 206, 526&ndash;540 (2019),
+  as restated by Peng, Chen &amp; Bobaru, <a href="https://doi.org/10.1007/s10704-023-00719-6">Int. J. Fract. (2023)</a>.
+  Each movie shows the plate colored by strain-energy density, the crack path in the reference grid, and the cut cells at the leading
+  tip. Cases A&ndash;C use the same load.</p>
+  <div class="grid two">
+    <figure>
+      <video src="videos/pores_case_A.mp4" poster="images/pores_case_A.jpg" muted loop playsinline controls preload="none"
+             aria-label="Simulation: a crack running through a row of pores on its line"></video>
+      <figcaption><strong>Case A: pores on the crack line</strong>The crack runs through all eight pores, often leaving a pore as two
+      cracks that rejoin at the next one: the lens shapes seen in the photograph of the experiment.</figcaption>
+    </figure>
+    <figure>
+      <video src="videos/pores_case_B.mp4" poster="images/pores_case_B.jpg" muted loop playsinline controls preload="none"
+             aria-label="Simulation: a crack splitting beside a row of pores"></video>
+      <figcaption><strong>Case B: one row beside the line</strong>The crack splits; one branch passes through a pore and continues
+      above the row, the other runs below the row to the far edge. The experiment shows the same pattern, starting about 8 mm further
+      along the plate.</figcaption>
+    </figure>
+    <figure>
+      <video src="videos/pores_case_C.mp4" poster="images/pores_case_C.jpg" muted loop playsinline controls preload="none"
+             aria-label="Simulation: a crack splitting between two rows of pores"></video>
+      <figcaption><strong>Case C: two rows</strong>The crack splits symmetrically about 8 mm from the edge (about 9 mm in the
+      experiment); one branch follows its row of pores to the far edge, while the other leaves its row and stops, as in the
+      experiment.</figcaption>
+    </figure>
+    <figure>
+      <video src="videos/pores_random.mp4" poster="images/pores_random.jpg" muted loop playsinline controls preload="none"
+             aria-label="Simulation: a crack hopping between randomly placed pores"></video>
+      <figcaption><strong>Random pores</strong>94 pores of different sizes (22% porosity), with the load raised slowly: the crack runs
+      to the first pore, then hops from pore to pore by breaking the short ligaments between them. There is no experiment to compare
+      with; the run shows the method on an arbitrary geometry.</figcaption>
+    </figure>
+  </div>
+
+  <h2>Hydraulic fracturing</h2>
+  <p class="note">The fluid pressure acts directly on the cut crack faces. Each movie shows the sheet (displacement magnified; blue:
+  fluid), the pressures against the injected volume, the cut cells at a crack tip, and the distance of the crack tips from the
+  borehole.</p>
+  <div class="grid">
+    <figure>
+      <video src="videos/hydraulic_stress_ratio10.mp4" poster="images/hydraulic_stress_ratio10.jpg" muted loop playsinline controls preload="none"
+             aria-label="Simulation: a hydraulic fracture turning under an in-situ stress ratio of 10"></video>
+      <figcaption><strong>Crack turning under in-situ stress</strong>Benchmark of Zhou, Zhuang &amp; Rabczuk,
+      <a href="https://arxiv.org/abs/2309.08584">Theor. Appl. Fract. Mech. 107, 102523 (2020)</a>: under a stress ratio of 10, the
+      crack turns toward the larger compressive stress and both ends curve into an S, as in their simulations, and the peak injection
+      pressure agrees with theirs (14.2 MPa against about 14 MPa).</figcaption>
+    </figure>
+    <figure>
+      <video src="videos/hydraulic_stiff_layers.mp4" poster="images/hydraulic_stiff_layers.jpg" muted loop playsinline controls preload="none"
+             aria-label="Simulation: a hydraulic fracture meeting stiff layers"></video>
+      <figcaption><strong>Crack meeting stiff layers</strong>A soft layer between two stiff layers, after Test 5 of AlTammar &amp;
+      Sharma, <a href="https://doi.org/10.2118/184871-MS">SPE-184871-MS (2017)</a>, at a low far-field stress: each wing steepens
+      toward the interface, runs along it, and then crosses into the stiff layer.</figcaption>
+    </figure>
+  </div>
+
+  <footer>
+    Research in progress with Prof. Panayiotis Papadopoulos, UC Berkeley; a manuscript is in preparation. Mesh-convergence studies
+    are ongoing, and this page will be updated as the work develops.<br>
+    Last updated: November 2026.
+  </footer>
+</main>
+<script>
+  (function () {
+    var vids = document.querySelectorAll('video');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        else { v.pause(); }
+      });
+    }, { threshold: 0.5 });
+    vids.forEach(function (v) { io.observe(v); });
+  })();
+</script>
+</body>
+</html>
